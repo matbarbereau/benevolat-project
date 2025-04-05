@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:16.6://benevolat
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    username: benevolat
+    password: benevolat

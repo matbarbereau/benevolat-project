@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  benevolat-api-postgres:
+    container_name: benevolat-api-postgres
+    image: 'postgres:16.6-alpine'
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: benevolat
+      POSTGRES_PASSWORD: benevolat
+      POSTGRES_DB: benevolat
