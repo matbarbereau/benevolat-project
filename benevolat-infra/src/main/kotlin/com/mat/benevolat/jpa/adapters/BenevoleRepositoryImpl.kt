@@ -19,7 +19,7 @@ class BenevoleRepositoryImpl(
     }
 
     override fun create(benevole: Benevole): Benevole? {
-        return benevoleMapper.toModel(benevoleJpaRepository.save(benevoleMapper.toEntity(benevole)))
+        return benevoleMapper.toModel(benevoleMapper.toEntity(benevole)?.let { benevoleJpaRepository.save(it) })
     }
 
     override fun listAll(): List<Benevole> {

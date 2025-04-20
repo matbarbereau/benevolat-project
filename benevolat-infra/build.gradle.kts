@@ -1,23 +1,16 @@
 plugins {
-    kotlin("jvm")
-    kotlin("plugin.spring")
     kotlin("kapt")
-    id("org.springframework.boot") version "3.4.4"
-    id("io.spring.dependency-management") version "1.1.7"
     id("org.flywaydb.flyway") version "10.15.2"
 }
 
 group = "com.mat.benevolat"
 version = "0.0.1-SNAPSHOT"
 
-//repositories {
-//    mavenCentral()
-//}
 
 dependencies {
+    implementation(project(":benevolat-domaine"))
     testImplementation(kotlin("test"))
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation(project(":benevolat-domaine"))
     implementation("org.flywaydb:flyway-core:10.15.2")
@@ -30,17 +23,6 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.1")
     implementation("org.mapstruct:mapstruct:1.6.3")
     kapt("org.mapstruct:mapstruct-processor:1.6.3")
-}
-
-tasks.bootJar {
-    enabled = false
-}
-
-tasks.test {
-    useJUnitPlatform()
-}
-kotlin {
-    jvmToolchain(21)
 }
 
 flyway {

@@ -20,7 +20,7 @@ class MembreRepositoryImpl(
     }
 
     override fun create(membre: Membre): Membre? {
-        return membreMapper.toModel(membreJpaRepository.save(membreMapper.toEntity(membre)))
+        return membreMapper.toModel(membreMapper.toEntity(membre)?.let { membreJpaRepository.save(it) })
     }
 
     override fun listAll(): List<Membre> {
