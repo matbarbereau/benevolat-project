@@ -23,6 +23,8 @@ dependencies {
     implementation("org.postgresql:postgresql:42.7.1")
     implementation("org.mapstruct:mapstruct:1.6.3")
     kapt("org.mapstruct:mapstruct-processor:1.6.3")
+    implementation("org.springframework.modulith:spring-modulith-core:1.3.3")
+    implementation("org.springframework.modulith:spring-modulith-docs:1.3.3")
 }
 
 flyway {
@@ -30,4 +32,12 @@ flyway {
     user = "benevolat"
     password = "benevolat"
     locations = arrayOf("classpath:db/migration")
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs("src/main/kotlin")
+        }
+    }
 }
