@@ -5,3 +5,4 @@ rootProject.name = "benevolat-parent"
 include("benevolat-application")
 include("benevolat-domaine")
 include("benevolat-infra")
+include("benevolat-server")
