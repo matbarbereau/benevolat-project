@@ -1,5 +1,6 @@
 plugins {
-    id("org.springframework.boot")
+    kotlin("kapt")
+    //id("org.springframework.boot")
 }
 
 group = "com.mat.benevolat"
@@ -13,6 +14,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.modulith:spring-modulith-core:1.3.3")
     implementation("org.springframework.modulith:spring-modulith-docs:1.3.3")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation ("org.mapstruct:mapstruct:1.6.3")
+    kapt("org.mapstruct:mapstruct-processor:1.6.3")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 }
 
 sourceSets {
