@@ -1,7 +1,6 @@
 package com.mat.benevolat.http
 
 import com.mat.benevolat.mapper.BenevoleServerMapper
-import com.mat.benevolat.model.Benevole
 import com.mat.benevolat.resource.BenevoleResource
 import com.mat.benevolat.service.BenevoleService
 import org.springframework.http.ResponseEntity
@@ -29,5 +28,11 @@ class BenevoleController(private val benevoleMapper: BenevoleServerMapper,
     fun getBenevole(@PathVariable id: UUID): ResponseEntity<BenevoleResource> {
         val benevole = benevoleService.getBenevole(id)?.let { benevoleMapper.toResource(it) }
         return ResponseEntity.ok(benevole)
+    }
+
+    @GetMapping
+    fun getBenevoles(): ResponseEntity<List<BenevoleResource>> {
+        val allBenevoles = benevoleService.getBenevoles()?.let { benevoleMapper.toResource(it) }
+        return ResponseEntity.ok(allBenevoles)
     }
 }

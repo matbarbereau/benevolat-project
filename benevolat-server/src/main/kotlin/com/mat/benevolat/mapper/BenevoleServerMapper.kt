@@ -8,5 +8,8 @@ import org.mapstruct.Mapper
 interface BenevoleServerMapper {
 
     fun toResource(benevole: Benevole): BenevoleResource
+
     fun toModel(resource: BenevoleResource): Benevole
+
+    fun toResource(benevoles: List<Benevole>): List<BenevoleResource>
 }

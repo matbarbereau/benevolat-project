@@ -23,7 +23,7 @@ class BenevoleRepositoryImpl(
     }
 
     override fun listAll(): List<Benevole> {
-        TODO("Not yet implemented")
+        return benevoleJpaRepository.findAll().mapNotNull { benevoleMapper.toModel(it) }
     }
 
     override fun deleteById(id: UUID) {
