@@ -17,7 +17,11 @@ class BenevoleService(private val benevoleRepository: BenevoleRepository) {
             .orElseThrow { NoSuchElementException("Bénévole non trouvé avec l'id $id") }
     }
 
-    fun getBenevoles(): List<Benevole>? {
+    fun getAllBenevoles(): List<Benevole>? {
         return benevoleRepository.listAll()
+    }
+
+    fun deleteBenevole(id: UUID) {
+        benevoleRepository.deleteById(id)
     }
 }

@@ -32,7 +32,13 @@ class BenevoleController(private val benevoleMapper: BenevoleServerMapper,
 
     @GetMapping
     fun getBenevoles(): ResponseEntity<List<BenevoleResource>> {
-        val allBenevoles = benevoleService.getBenevoles()?.let { benevoleMapper.toResource(it) }
+        val allBenevoles = benevoleService.getAllBenevoles()?.let { benevoleMapper.toResource(it) }
         return ResponseEntity.ok(allBenevoles)
+    }
+
+    @DeleteMapping("{id}")
+    fun deleteBenevole(@PathVariable id: UUID): ResponseEntity<Void> {
+        benevoleService.deleteBenevole(id)
+        return ResponseEntity.noContent().build();
     }
 }

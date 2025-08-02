@@ -27,6 +27,6 @@ class BenevoleRepositoryImpl(
     }
 
     override fun deleteById(id: UUID) {
-        TODO("Not yet implemented")
+        benevoleJpaRepository.deleteById(id)
     }
 }
