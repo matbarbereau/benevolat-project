@@ -13,7 +13,7 @@ class BenevoleServerMapperTest {
     fun testFromBenevoleToBenevoleResource() {
         val id = UUID.randomUUID()
         val benevole  = Benevole(id, "John", "Doe")
-        val resource = benevoleServerMapper.toResources(benevole)
+        val resource = benevoleServerMapper.toResource(benevole)
 
         assert(resource.prenom == "John")
         assert(resource.nom == "Doe")
@@ -39,7 +39,7 @@ class BenevoleServerMapperTest {
         val benevole2 = Benevole(id2, "Jane", "Smith")
         val benevoles = listOf(benevole1, benevole2)
 
-        val resources = benevoleServerMapper.toResources(benevoles)
+        val resources = benevoleServerMapper.toResourceList(benevoles)
 
         assert(resources.size == 2)
         assert(resources[0].prenom == "John")

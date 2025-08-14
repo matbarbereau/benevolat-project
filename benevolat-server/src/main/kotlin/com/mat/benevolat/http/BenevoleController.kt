@@ -16,7 +16,7 @@ class BenevoleController(private val benevoleMapper: BenevoleServerMapper,
     @PostMapping()
     fun createBenevole(@RequestBody benevoleResource: BenevoleResource ): ResponseEntity<BenevoleResource> {
         val created = benevoleService.createBenevole(benevoleMapper.toModel(benevoleResource))
-        val response = created?.let { benevoleMapper.toResources(it) }
+        val response = created?.let { benevoleMapper.toResource(it) }
         val locationUri = URI.create("/benevoles/${response?.id}")
 
         return ResponseEntity
@@ -26,13 +26,13 @@ class BenevoleController(private val benevoleMapper: BenevoleServerMapper,
 
     @GetMapping("{id}")
     fun getBenevole(@PathVariable id: UUID): ResponseEntity<BenevoleResource> {
-        val benevole = benevoleService.getBenevole(id)?.let { benevoleMapper.toResources(it) }
+        val benevole = benevoleService.getBenevole(id)?.let { benevoleMapper.toResource(it) }
         return ResponseEntity.ok(benevole)
     }
 
     @GetMapping
     fun getBenevoles(): ResponseEntity<List<BenevoleResource>> {
-        val allBenevoles = benevoleService.getAllBenevoles()?.let { benevoleMapper.toResources(it) }
+        val allBenevoles = benevoleService.getAllBenevoles()?.let { benevoleMapper.toResourceList(it) }
         return ResponseEntity.ok(allBenevoles)
     }
 

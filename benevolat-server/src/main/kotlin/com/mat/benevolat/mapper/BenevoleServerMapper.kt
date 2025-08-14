@@ -7,9 +7,9 @@ import org.mapstruct.Mapper
 @Mapper(componentModel = "spring")
 interface BenevoleServerMapper {
 
-    fun toResources(benevole: Benevole): BenevoleResource
+    fun toResource(benevole: Benevole): BenevoleResource
 
     fun toModel(resource: BenevoleResource): Benevole
 
-    fun toResources(benevoles: List<Benevole>): List<BenevoleResource>
+    fun toResourceList(benevoles: List<Benevole>): List<BenevoleResource>
 }

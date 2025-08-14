@@ -15,9 +15,13 @@ dependencies {
     implementation("org.springframework.modulith:spring-modulith-core:1.3.3")
     implementation("org.springframework.modulith:spring-modulith-docs:1.3.3")
     implementation("org.springframework.boot:spring-boot-starter-web")
-    implementation ("org.mapstruct:mapstruct:1.6.3")
+    implementation("org.mapstruct:mapstruct:1.6.3")
     kapt("org.mapstruct:mapstruct-processor:1.6.3")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.mockito:mockito-core:5.+")
+    testImplementation("io.mockk:mockk:1.13.11")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
 }
 
 sourceSets {

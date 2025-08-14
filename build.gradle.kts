@@ -10,7 +10,11 @@ java {
 		languageVersion = JavaLanguageVersion.of(21)
 	}
 }
-
+repositories {
+	mavenCentral()
+	gradlePluginPortal()
+	maven("https://repo.spring.io/release")
+}
 subprojects {
 	apply(plugin = "org.jetbrains.kotlin.jvm")
 	apply(plugin = "org.jetbrains.kotlin.plugin.spring")
