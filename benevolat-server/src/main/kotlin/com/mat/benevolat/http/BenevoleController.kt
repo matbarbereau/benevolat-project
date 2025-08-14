@@ -26,8 +26,10 @@ class BenevoleController(private val benevoleMapper: BenevoleServerMapper,
 
     @GetMapping("{id}")
     fun getBenevole(@PathVariable id: UUID): ResponseEntity<BenevoleResource> {
-        val benevole = benevoleService.getBenevole(id)?.let { benevoleMapper.toResource(it) }
-        return ResponseEntity.ok(benevole)
+        val benevole = benevoleService.getBenevole(id)
+            ?: return ResponseEntity.notFound().build()
+
+        return ResponseEntity.ok(benevoleMapper.toResource(benevole))
     }
 
     @GetMapping

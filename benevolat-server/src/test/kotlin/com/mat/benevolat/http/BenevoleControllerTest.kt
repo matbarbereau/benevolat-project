@@ -22,6 +22,7 @@ import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import org.springframework.web.context.WebApplicationContext
@@ -54,23 +55,25 @@ class BenevoleControllerTest {
     @MockkBean
     lateinit var mapper: BenevoleServerMapper
 
+
+    private val id = UUID.randomUUID()
+    private val benevole = Benevole(id, "John", "Doe")
+    private val benevoleResource = BenevoleResource(id, "John", "Doe")
+
     @BeforeEach
     fun setup(webApplicationContext: WebApplicationContext) {
         mockMvc = MockMvcBuilders
             .webAppContextSetup(webApplicationContext)
             .build()
-    }
-
-    @Test
-    fun testCreateBenevole() {
-        val benevole = Benevole(UUID.randomUUID(), "John", "Doe")
 
         every { benevoleService.createBenevole(any()) } returns benevole
         every { mapper.toModel(any()) } returns benevole
-        every { mapper.toResource(any()) } returns BenevoleResource(UUID.randomUUID(), benevole.prenom, benevole.nom)
+        every { mapper.toResource(any()) } returns BenevoleResource(id, benevole.prenom, benevole.nom)
 
-        val benevoleResource = BenevoleResource(UUID.randomUUID(), "John", "Doe")
+    }
 
+    @Test
+    fun testCreateBenevoleOk() {
         mockMvc.perform(
             post("/benevoles")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -79,14 +82,33 @@ class BenevoleControllerTest {
             .andExpect(status().isCreated)
     }
 
-    //@Test
-    fun testGetBenevole() {
-        val id = UUID.randomUUID()
-        val benevole = Benevole(id, "John", "Doe")
-
-        every {benevoleService.getBenevole(id)} returns benevole
-
-        mockMvc.perform(get("/benevoles/$id"))
-            .andExpect(status().isOk)
+    @Test
+    fun testCreatebenevoleBadRequest() {
+        mockMvc.perform(
+            post("/benevoles")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}")
+        )
+            .andExpect(status().isBadRequest)
     }
+
+    @Test
+    fun testGetBenevoleSuccess() {
+        every { benevoleService.getBenevole(id)} returns benevole
+        mockMvc.perform(get("/benevoles/${id}"))
+            .andExpect(status().isOk)
+            .andExpect(jsonPath("$.id").value(benevole.id.toString()))
+            .andExpect(jsonPath("$.prenom").value(benevole.prenom))
+            .andExpect(jsonPath("$.nom").value(benevole.nom))
+    }
+
+    @Test
+    fun getGetBenevoleNotFound() {
+        val nonExistentId = UUID.randomUUID()
+        every { benevoleService.getBenevole(nonExistentId)} returns null
+
+        mockMvc.perform(get("/benevoles/${nonExistentId}"))
+            .andExpect(status().isNotFound)
+    }
+
 }
