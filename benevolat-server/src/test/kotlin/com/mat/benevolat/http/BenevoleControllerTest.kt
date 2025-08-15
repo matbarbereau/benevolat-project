@@ -2,12 +2,16 @@ package com.mat.benevolat.http
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.mat.benevolat.handler.BenevolatServerExceptionHandler
+import com.mat.benevolat.handler.BenevoleNotFoundException
 import com.mat.benevolat.mapper.BenevoleServerMapper
 import com.mat.benevolat.model.Benevole
 import com.mat.benevolat.resource.BenevoleResource
 import com.mat.benevolat.service.BenevoleService
 import com.ninjasquad.springmockk.MockkBean
+import io.mockk.Runs
 import io.mockk.every
+import io.mockk.just
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -20,8 +24,7 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import org.springframework.test.context.web.WebAppConfiguration
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -32,7 +35,7 @@ import java.util.*
 
 @TestConfiguration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = [BenevoleController::class])
+@ComponentScan(basePackageClasses = [BenevoleController::class, BenevolatServerExceptionHandler::class])
 class TestWebConfig : WebMvcConfigurer {
     @Bean
     fun objectMapper(): ObjectMapper =
@@ -55,7 +58,6 @@ class BenevoleControllerTest {
     @MockkBean
     lateinit var mapper: BenevoleServerMapper
 
-
     private val id = UUID.randomUUID()
     private val benevole = Benevole(id, "John", "Doe")
     private val benevoleResource = BenevoleResource(id, "John", "Doe")
@@ -67,8 +69,9 @@ class BenevoleControllerTest {
             .build()
 
         every { benevoleService.createBenevole(any()) } returns benevole
+        every { benevoleService.deleteBenevole(any()) } returns Unit
         every { mapper.toModel(any()) } returns benevole
-        every { mapper.toResource(any()) } returns BenevoleResource(id, benevole.prenom, benevole.nom)
+        every { mapper.toResource(any()) } returns benevoleResource
 
     }
 
@@ -108,6 +111,26 @@ class BenevoleControllerTest {
         every { benevoleService.getBenevole(nonExistentId)} returns null
 
         mockMvc.perform(get("/benevoles/${nonExistentId}"))
+            .andExpect(status().isNotFound)
+    }
+
+    @Test
+    fun testDeleteBenevoleSuccess() {
+        val id = UUID.randomUUID()
+
+        every { benevoleService.deleteBenevole(id) } just Runs
+
+        mockMvc.perform(delete("/benevoles/$id"))
+            .andExpect(status().isNoContent)
+    }
+
+    @Test
+    fun testDeleteBenevoleResourceDoesNotExist() {
+        val nonExistentId = UUID.randomUUID()
+
+        every { benevoleService.deleteBenevole(nonExistentId) } throws BenevoleNotFoundException("Not found")
+
+        mockMvc.perform(delete("/benevoles/$nonExistentId"))
             .andExpect(status().isNotFound)
     }
 
