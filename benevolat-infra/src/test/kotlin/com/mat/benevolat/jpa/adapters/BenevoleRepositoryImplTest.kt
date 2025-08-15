@@ -21,7 +21,7 @@ class BenevoleRepositoryImplTest(
     }
 
     @Test
-    fun insertAndFetchMembre() {
+    fun insertAndFetchBenevole() {
         val benevoleId = UUID.randomUUID()
         val benevole: Benevole = Benevole(benevoleId, "Mélanie", "Sanedanlgarage")
         val created: Benevole? = this.benevoleRepository.create(benevole)

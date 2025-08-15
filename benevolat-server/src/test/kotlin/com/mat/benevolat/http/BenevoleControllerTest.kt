@@ -69,7 +69,6 @@ class BenevoleControllerTest {
             .build()
 
         every { benevoleService.createBenevole(any()) } returns benevole
-        every { benevoleService.deleteBenevole(any()) } returns Unit
         every { mapper.toModel(any()) } returns benevole
         every { mapper.toResource(any()) } returns benevoleResource
 
