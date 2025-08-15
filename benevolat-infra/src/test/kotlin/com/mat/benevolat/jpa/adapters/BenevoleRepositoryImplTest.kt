@@ -22,12 +22,13 @@ class BenevoleRepositoryImplTest(
 
     @Test
     fun insertAndFetchBenevole() {
-        val benevoleId = UUID.randomUUID()
-        val benevole: Benevole = Benevole(benevoleId, "Mélanie", "Sanedanlgarage")
+        //val benevoleId = UUID.randomUUID()
+        val benevole: Benevole = Benevole(null,"Mélanie", "Sanedanlgarage")
         val created: Benevole? = this.benevoleRepository.create(benevole)
-        assertThat(created).isEqualTo(benevole)
+        assertThat(created).isNotNull
+        assertThat(created?.id).isNotNull
 
-        val found: Optional<Benevole> = benevoleRepository.findById(benevoleId)
-        assertThat(found.get()).isEqualTo(created)
+        val found: Optional<Benevole> = benevoleRepository.findById(created?.id ?: UUID.randomUUID())
+        assertThat(found.isPresent).isTrue
     }
 }

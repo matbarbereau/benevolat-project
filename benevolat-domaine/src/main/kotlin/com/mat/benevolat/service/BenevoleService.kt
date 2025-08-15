@@ -9,6 +9,7 @@ import java.util.*
 class BenevoleService(private val benevoleRepository: BenevoleRepository) {
 
     fun createBenevole(benevole: Benevole): Benevole? {
+        //UUID.randomUUID().also { benevole.id = it }
         return benevoleRepository.create(benevole)
     }
 

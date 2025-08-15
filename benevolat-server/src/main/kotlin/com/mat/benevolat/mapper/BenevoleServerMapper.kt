@@ -1,6 +1,7 @@
 package com.mat.benevolat.mapper
 
 import com.mat.benevolat.model.Benevole
+import com.mat.benevolat.resource.BenevoleCreateRequest
 import com.mat.benevolat.resource.BenevoleResource
 import org.mapstruct.Mapper
 
@@ -9,7 +10,8 @@ interface BenevoleServerMapper {
 
     fun toResource(benevole: Benevole): BenevoleResource
 
-    fun toModel(resource: BenevoleResource): Benevole
+    fun toModel(resource: BenevoleCreateRequest): Benevole
 
     fun toResourceList(benevoles: List<Benevole>): List<BenevoleResource>
+
 }

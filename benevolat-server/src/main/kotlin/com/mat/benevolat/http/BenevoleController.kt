@@ -1,6 +1,7 @@
 package com.mat.benevolat.http
 
 import com.mat.benevolat.mapper.BenevoleServerMapper
+import com.mat.benevolat.resource.BenevoleCreateRequest
 import com.mat.benevolat.resource.BenevoleResource
 import com.mat.benevolat.service.BenevoleService
 import org.springframework.http.ResponseEntity
@@ -14,7 +15,7 @@ class BenevoleController(private val benevoleMapper: BenevoleServerMapper,
     private val benevoleService: BenevoleService) {
 
     @PostMapping()
-    fun createBenevole(@RequestBody benevoleResource: BenevoleResource ): ResponseEntity<BenevoleResource> {
+    fun createBenevole(@RequestBody benevoleResource: BenevoleCreateRequest ): ResponseEntity<BenevoleResource> {
         val created = benevoleService.createBenevole(benevoleMapper.toModel(benevoleResource))
         val response = created?.let { benevoleMapper.toResource(it) }
         val locationUri = URI.create("/benevoles/${response?.id}")

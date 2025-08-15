@@ -1,15 +1,16 @@
 package com.mat.benevolat.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
+import jakarta.persistence.*
+import org.hibernate.annotations.GenericGenerator
 import java.util.*
 
 @Entity
 @Table(name = "benevole")
 class BenevoleEntity {
     @Id
-    lateinit var id: UUID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // ou AUTO selon le driver
+    @Column(columnDefinition = "uuid DEFAULT uuid_generate_v7()")
+    var id: UUID? = null
     lateinit var nom: String
     lateinit var prenom: String
 }

@@ -1,7 +1,7 @@
 package com.mat.benevolat.mapper
 
 import com.mat.benevolat.model.Benevole
-import com.mat.benevolat.resource.BenevoleResource
+import com.mat.benevolat.resource.BenevoleCreateRequest
 import org.junit.jupiter.api.Test
 import java.util.UUID
 
@@ -10,7 +10,7 @@ class BenevoleServerMapperTest {
     private var benevoleServerMapper = BenevoleServerMapperImpl()
 
     @Test
-    fun testFromBenevoleToBenevoleResource() {
+    fun testToResource() {
         val id = UUID.randomUUID()
         val benevole  = Benevole(id, "John", "Doe")
         val resource = benevoleServerMapper.toResource(benevole)
@@ -21,18 +21,17 @@ class BenevoleServerMapperTest {
     }
 
     @Test
-    fun testFromBenevoleResourceToBenevole() {
+    fun testToModel() {
         val id = UUID.randomUUID()
-        val resource = BenevoleResource(id, "John", "Doe")
-        val benevole = benevoleServerMapper.toModel(resource)
+        val benevoleCreateRequest = BenevoleCreateRequest("John", "Doe")
+        val benevole = benevoleServerMapper.toModel(benevoleCreateRequest)
 
         assert(benevole.prenom == "John")
         assert(benevole.nom == "Doe")
-        assert(benevole.id == id)
     }
 
     @Test
-    fun testFromBenevoleListToBenevoleResourceList() {
+    fun testToResourceList() {
         val id1 = UUID.randomUUID()
         val id2 = UUID.randomUUID()
         val benevole1 = Benevole(id1, "John", "Doe")
