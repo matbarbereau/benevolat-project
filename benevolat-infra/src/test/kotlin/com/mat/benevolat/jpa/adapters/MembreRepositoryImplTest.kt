@@ -30,7 +30,7 @@ class MembreRepositoryImplTest(
     }
 
     @Test
-    fun insertAndFetchMembre() {
+    fun `insert and fetch benevole`() {
         val membreId = UUID.randomUUID()
         val membre: Membre = Membre(membreId, "M0001", "Sanedanlgarage", "Mélanie")
         val created: Membre? = this.membreRepository.create(membre)
