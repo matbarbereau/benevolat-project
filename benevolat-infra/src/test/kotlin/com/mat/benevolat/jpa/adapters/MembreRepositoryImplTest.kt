@@ -30,7 +30,7 @@ class MembreRepositoryImplTest(
     }
 
     @Test
-    fun `insert and fetch benevole`() {
+    fun `insert and fetch membre`() {
         val membreId = UUID.randomUUID()
         val membre: Membre = Membre(membreId, "M0001", "Sanedanlgarage", "Mélanie")
         val created: Membre? = this.membreRepository.create(membre)
@@ -39,6 +39,6 @@ class MembreRepositoryImplTest(
         val found: Optional<Membre> = membreRepository.findById(membreId)
         assertThat(found.get()).isEqualTo(created)
         assertThat(found).isPresent
-        assertThat(found.get().nom).isEqualTo("Sanedanlgarage")
+        assertThat(found.get().prenom).isEqualTo("Sanedanlgarage")
     }
 }
