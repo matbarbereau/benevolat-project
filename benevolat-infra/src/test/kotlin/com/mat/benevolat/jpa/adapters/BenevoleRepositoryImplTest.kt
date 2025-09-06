@@ -1,19 +1,28 @@
 package com.mat.benevolat.jpa.adapters
 
-import com.mat.benevolat.AbstractIntegrationTest
+import com.mat.benevolat.IntegrationTestConfiguration
 import com.mat.benevolat.model.Benevole
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
+import org.springframework.context.annotation.ComponentScan
+import org.springframework.context.annotation.FilterType
+import org.springframework.stereotype.Repository
+import org.springframework.test.context.ActiveProfiles
+import org.springframework.test.context.ContextConfiguration
 
-class BenevoleRepositoryImplTest(
+
+@ActiveProfiles("test")
+@DataJpaTest(includeFilters = [ComponentScan.Filter(type = FilterType.ANNOTATION, classes = [Repository::class])])
+@ContextConfiguration(classes = [IntegrationTestConfiguration::class])
+class BenevoleRepositoryImplTest (
     @Autowired
     var benevoleRepository: BenevoleRepositoryImpl,
     @Autowired
     var benevoleJpaRepository: BenevoleJpaRepository
-): AbstractIntegrationTest() {
+){
 
     @BeforeEach
     fun setup() {
@@ -21,14 +30,17 @@ class BenevoleRepositoryImplTest(
     }
 
     @Test
-    fun insertAndFetchBenevole() {
-        //val benevoleId = UUID.randomUUID()
-        val benevole: Benevole = Benevole(null,"Mélanie", "Sanedanlgarage")
-        val created: Benevole? = this.benevoleRepository.create(benevole)
+    fun `insert and fetch benevole`() {
+        val benevole = Benevole(null, "Mélanie", "Sanedanlgarage")
+        val created = benevoleRepository.create(benevole)
+
         assertThat(created).isNotNull
         assertThat(created?.id).isNotNull
 
-        val found: Optional<Benevole> = benevoleRepository.findById(created?.id ?: UUID.randomUUID())
-        assertThat(found.isPresent).isTrue
+        val found = benevoleRepository.findById(created!!.id!!)
+        assertThat(found).isPresent
+        assertThat(found.get()).isEqualTo(created)
+        assertThat(found.get().nom).isEqualTo("Sanedanlgarage")
     }
 }
+
