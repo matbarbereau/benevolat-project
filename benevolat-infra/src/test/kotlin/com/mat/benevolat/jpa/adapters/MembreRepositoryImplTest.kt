@@ -1,6 +1,7 @@
 package com.mat.benevolat.jpa.adapters
 
 import com.mat.benevolat.IntegrationTestConfiguration
+import com.mat.benevolat.jpa.mother.MembreObjectMother
 import com.mat.benevolat.model.Membre
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
@@ -31,14 +32,37 @@ class MembreRepositoryImplTest(
 
     @Test
     fun `insert and fetch membre`() {
-        val membreId = UUID.randomUUID()
-        val membre: Membre = Membre(membreId, "M0001", "Sanedanlgarage", "Mélanie")
+
+        val membre = MembreObjectMother.member().build()
         val created: Membre? = this.membreRepository.create(membre)
         assertThat(created).isEqualTo(membre)
 
-        val found: Optional<Membre> = membreRepository.findById(membreId)
+        val found: Optional<Membre> = membreRepository.findById(membre.id)
         assertThat(found.get()).isEqualTo(created)
         assertThat(found).isPresent
-        assertThat(found.get().prenom).isEqualTo("Sanedanlgarage")
+        assertThat(found.get().prenom).isEqualTo("Mélanie")
+    }
+
+    @Test
+    fun `get all membres`(){
+        val membre1 = MembreObjectMother.member().matricule("M001").id(UUID.randomUUID()).build()
+        val membre2 = MembreObjectMother.member().matricule("M002").id(UUID.randomUUID()).build()
+        val membre3 = MembreObjectMother.member().matricule("M003").id(UUID.randomUUID()).build()
+        membreRepository.create(membre1)
+        membreRepository.create(membre2)
+        membreRepository.create(membre3)
+
+        val membres: List<Membre> = membreRepository.listAll()
+        assertThat(membres).hasSize(3)
+        assertThat(membres).containsExactlyInAnyOrder(membre1, membre2, membre3)
+    }
+
+    @Test
+    fun `delete by id`() {
+        val membre = MembreObjectMother.member().build()
+        val created: Membre? = this.membreRepository.create(membre)
+
+        membreRepository.deleteById(membre.id)
+        assertThat(membreRepository.findById(membre.id)).isNotPresent
     }
 }

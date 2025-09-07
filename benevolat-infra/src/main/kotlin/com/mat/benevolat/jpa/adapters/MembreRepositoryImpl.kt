@@ -24,10 +24,10 @@ class MembreRepositoryImpl(
     }
 
     override fun listAll(): List<Membre> {
-        TODO("Not yet implemented")
+        return membreJpaRepository.findAll().map { membreMapper.toModel(it)!! }
     }
 
     override fun deleteById(id: UUID) {
-        TODO("Not yet implemented")
+        membreJpaRepository.deleteById(id)
     }
 }
