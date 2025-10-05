@@ -12,11 +12,11 @@ import java.util.*
 @RestController
 @RequestMapping("/benevoles")
 class BenevoleController(private val benevoleMapper: BenevoleServerMapper,
-    private val benevoleService: BenevoleService) {
+                         private val benevoleService: BenevoleService) {
 
     @PostMapping()
-    fun createBenevole(@RequestBody benevoleResource: BenevoleCreateRequest ): ResponseEntity<BenevoleResource> {
-        val created = benevoleService.createBenevole(benevoleMapper.toModel(benevoleResource))
+    fun createBenevole(@RequestBody benevoleCreateRequest: BenevoleCreateRequest ): ResponseEntity<BenevoleResource> {
+        val created = benevoleService.createBenevole(benevoleMapper.toModel(benevoleCreateRequest))
         val response = created?.let { benevoleMapper.toResource(it) }
         val locationUri = URI.create("/benevoles/${response?.id}")
 
